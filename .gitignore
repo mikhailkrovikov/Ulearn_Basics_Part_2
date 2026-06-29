@@ -1,0 +1,7 @@
+﻿################################################################################
+# Данный GITIGNORE-файл был автоматически создан Microsoft(R) Visual Studio.
+################################################################################
+
+/Module_1_Generics/LimitedSizeStack/obj
+/Module_1_Generics/LimitedSizeStack/.vs/LimitedSizeStack/FileContentIndex
+/Module_1_Generics/LimitedSizeStack/bin/Debug/net8.0
