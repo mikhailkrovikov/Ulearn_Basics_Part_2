@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 namespace linq_slideviews;
@@ -43,15 +44,25 @@ public class ParsingTask
     {
         var visitedList = lines.Skip(1);
         var result = new List<VisitRecord>();
-        //var slideIds = ParseSlideRecords(lines);
         foreach (var line in visitedList)
         {
-            var parsed = line.Split(';');
-            var userId = int.Parse(parsed[0]);
-            var slideId = int.Parse(parsed[1]);
-            var datetime = DateTime.Parse(parsed[2]);
-            var slideType = slides[int.Parse(parsed[1])].SlideType;
-            result.Add(new VisitRecord(userId, slideId, datetime, slideType));
+            var parsed = line.Split(';', StringSplitOptions.RemoveEmptyEntries);
+            if(parsed.Length != 4)
+                throw new FormatException($"Wrong line [{line}]");
+            var userId = int.TryParse(parsed[0], out var userIdValue) ? 
+                userIdValue : throw new FormatException($"Wrong line [{line}]");
+            var slideId = int.TryParse(parsed[1], out var slideIdValue) ? 
+                slideIdValue : throw new FormatException($"Wrong line [{line}]");
+            if (!slides.ContainsKey(slideId))
+                throw new FormatException($"Wrong line [{line}]");
+            var slideType = slides[slideId].SlideType;
+            var d = DateTime.TryParse(parsed[2], CultureInfo.InvariantCulture, DateTimeStyles.None, out var dateValue) ? 
+                dateValue : throw new FormatException($"Wrong line [{line}]");
+            var t = DateTime.TryParse(parsed[3], CultureInfo.InvariantCulture, DateTimeStyles.None, out var timeValue) ? 
+                timeValue : throw new FormatException($"Wrong line [{line}]");
+            var date = DateTime.TryParse(parsed[2] + " " + parsed[3], CultureInfo.InvariantCulture, DateTimeStyles.None, out var dateValue1) ? 
+                dateValue1 : throw new FormatException($"Wrong line [{line}]");
+            result.Add(new VisitRecord(userId, slideId, date, slideType));
         }
         return result;
     }
