@@ -35,3 +35,6 @@
 /Module_6_LINQ/linq-slideviews/obj
 *.sln
 /Module_6_LINQ/linq-slideviews/.vs/ProjectEvaluation
+/Module_9_Threads/rocket-bot/.vs/Rocket
+/Module_9_Threads/rocket-bot/bin/Debug/net8.0
+/Module_9_Threads/rocket-bot/obj
